@@ -22,7 +22,6 @@
     ></script>
     <script src="./js/movie.js" type="module" defer></script>
     <script src="./js/main.js" type="module" defer></script>
-    <script src="./js/movieSearch.js" defer></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -55,7 +54,12 @@
     </nav>
 
     <div class="container text-center">
-      <form class="row g-3 needs-validation" novalidate>
+      <form
+        class="row g-3 needs-validation"
+        id="movie-search-form"
+        action="#"
+        novalidate
+      >
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label"
             >Movie Search</label

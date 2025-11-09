@@ -2,27 +2,22 @@
 import config from "./config.js";
 import { Movie } from "./movie.js";
 
-//  disabling form submissions if there are invalid fields
-(() => {
-  "use strict";
-
-  const forms = document.querySelectorAll(".needs-validation");
-
-  Array.from(forms).forEach((form) => {
-    form.addEventListener("submit", (event) => {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-
-      form.classList.add("was-validated");
-    });
-  });
-})();
+const loadBtn = document.getElementById("loadBtn");
+loadBtn.addEventListener("click", search);
 
 //
-async function search() {
+async function search(event) {
   console.log("inside search");
+  //  disabling form submissions if there are invalid fields
+  const form = document.getElementById("movie-search-form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+
+  form.classList.add("was-validated");
 
   const q = document.getElementById("q").value.trim();
 
@@ -52,9 +47,6 @@ async function search() {
     spinner.classList.add("d-none"); // hide spinner after API completes
   }
 }
-
-const loadBtn = document.getElementById("loadBtn");
-loadBtn.addEventListener("click", search);
 
 // takes an array of your Movie objects and displays them
 export function showMovies(movies) {
@@ -88,9 +80,7 @@ export function showMovies(movies) {
               }
             </p>
 
-            <button class="btn btn-primary mt-auto w-100">
-              More Info
-            </button>
+            
           </div>
         </div>
       </div>
