@@ -59,7 +59,7 @@ export function showMovies(movies) {
   }
 
   movies.forEach((movie) => {
-    const poster = movie.getPosterUrl() ?? "../images/blank-poster.png";
+    const poster = movie.getPosterUrl() ?? "./images/blank-poster.png";
 
     const card = `
       <div class="col-md-3 mb-4">
