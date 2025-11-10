@@ -52,40 +52,72 @@
         </div>
       </div>
     </nav>
+    <main>
+      <div class="container text-center">
+        <form
+          class="row g-3 needs-validation"
+          id="movie-search-form"
+          action="#"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >Movie Search</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="q"
+              aria-describedby="Help..."
+              required
+            />
+            <div class="invalid-feedback">Enter a Movie name</div>
+          </div>
 
-    <div class="container text-center">
-      <form
-        class="row g-3 needs-validation"
-        id="movie-search-form"
-        action="#"
-        novalidate
-      >
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >Movie Search</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="q"
-            aria-describedby="Help..."
-            required
-          />
-          <div class="invalid-feedback">Enter a Movie name</div>
+          <div class="col-12">
+            <button type="button" class="btn btn-primary" id="loadBtn">
+              <span
+                class="spinner-border spinner-border-sm d-none"
+                id="spinner"
+              ></span>
+              Search Movie
+            </button>
+          </div>
+        </form>
+
+        <div class="card-group mt-4" id="movieList"></div>
+      </div>
+    </main>
+
+    <footer class="bg-dark text-white py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-md-end text-center">
+            <p>Follow us:</p>
+            <a
+              href="https://www.Facebook.com"
+              target="_blank"
+              class="text-white me-2"
+              ><i class="bi bi-facebook"></i> Facebook</a
+            >
+            <a
+              href="https://www.Instagram.com"
+              target="_blank"
+              class="text-white me-2"
+              ><i class="bi bi-instagram"></i> Instagram</a
+            >
+            <a href="https://www.X.com" target="_blank" class="text-white"
+              ><i class="bi bi-twitter"></i> Twitter</a
+            >
+          </div>
         </div>
-
-        <div class="col-12">
-          <button type="button" class="btn btn-primary" id="loadBtn">
-            <span
-              class="spinner-border spinner-border-sm d-none"
-              id="spinner"
-            ></span>
-            Search Movie
-          </button>
+        <div class="text-center mt-3">
+          <p>&copy; 2025 eCinema. All rights reserved.</p>
+          <p>
+            Icons obtained via Font-awesome and Images obtained via Unsplash.com
+          </p>
         </div>
-      </form>
-
-      <div class="card-group mt-4" id="movieList"></div>
-    </div>
+      </div>
+    </footer>
   </body>
 </html>
