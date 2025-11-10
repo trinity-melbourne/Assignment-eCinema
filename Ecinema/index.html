@@ -23,7 +23,9 @@
     <script src="./js/movie.js" type="module" defer></script>
     <script src="./js/main.js" type="module" defer></script>
   </head>
-  <body>
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- PAGE CONTENT GOES HERE -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="index.html"
@@ -54,7 +56,8 @@
         </div>
       </div>
     </nav>
-    <main>
+    <main class="flex-fill">
+      <!-- your page content → cards, search bar etc -->
       <div class="container text-center">
         <form
           class="row g-3 needs-validation"
@@ -91,6 +94,7 @@
       </div>
     </main>
 
+    <!-- FOOTER BELOW -->
     <footer class="bg-dark text-white py-3 mt-5">
       <div class="container">
         <div class="row">
@@ -99,19 +103,24 @@
               href="https://www.Facebook.com"
               target="_blank"
               class="text-white me-2"
-              ><i class="bi bi-facebook"></i> Facebook</a
             >
+              <i class="bi bi-facebook"></i> Facebook
+            </a>
+
             <a
               href="https://www.Instagram.com"
               target="_blank"
               class="text-white me-2"
-              ><i class="bi bi-instagram"></i> Instagram</a
             >
-            <a href="https://www.X.com" target="_blank" class="text-white"
-              ><i class="bi bi-twitter"></i> Twitter</a
-            >
+              <i class="bi bi-instagram"></i> Instagram
+            </a>
+
+            <a href="https://www.X.com" target="_blank" class="text-white">
+              <i class="bi bi-twitter"></i> Twitter
+            </a>
           </div>
         </div>
+
         <div class="text-center mt-3">
           <p>&copy; 2025 eCinema. All rights reserved.</p>
           <p>
