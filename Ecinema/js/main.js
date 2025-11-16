@@ -45,17 +45,15 @@ async function search(event) {
   spinner.classList.remove("d-none"); // show spinner
 
   try {
-    const response = await fetch(config.API_URL + `/search/movie?query=${encodeURIComponent(q)}`, {
-      method: "GET",
+    const response = await axios.get(`${config.API_URL}/search/movie`, {
+      params: { query: q },
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${config.TOKEN}`,
       },
     });
 
-    const data = await response.json();
-
-    const movies = data.results.map((movieData) => new Movie(movieData));
+    const movies = (response.data.results || []).map((movieData) => new Movie(movieData));
 
     showMovies(movies);
   } catch (error) {
