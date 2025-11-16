@@ -54,20 +54,29 @@
           <!-- Contact Form -->
           <div class="col-md-6 offset-md-3">
             <h2 class="text-center mb-4"><i class="bi bi-envelope"></i> Contact Us</h2>
+            <p>Please fill out the form below to get in touch with us.</p>
             <form class="needs-validation" id="contact-us-form" action="#" novalidate>
               <div class="mb-3">
                 <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="name" required />
+                <input type="text" class="form-control" id="name" placeholder="Enter Full Name..." required />
                 <div class="invalid-feedback">Enter your name</div>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email address <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" id="email" required />
+                <input type="email" class="form-control" id="email" placeholder="Enter Email..." required />
                 <div class="invalid-feedback">Enter your Email address</div>
               </div>
               <div class="mb-3">
                 <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="message" rows="3" required></textarea>
+                <textarea
+                  class="form-control"
+                  id="message"
+                  rows="3"
+                  placeholder="Enter your message here..."
+                  required
+                  minlength="10"
+                  maxlength="255"
+                ></textarea>
                 <div class="invalid-feedback">Enter a Message</div>
               </div>
               <button type="button" class="btn btn-primary" id="contactBtn">Send</button>

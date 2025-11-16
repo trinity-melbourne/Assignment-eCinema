@@ -1,8 +1,8 @@
-//Imports
+// Imports
 import config from "./config.js";
 import { Movie } from "./movie.js";
 
-// replacing:
+//* replacing:
 // const loadBtn = document.getElementById("loadBtn");
 // if (loadBtn) loadBtn.addEventListener("click", search);
 
@@ -12,9 +12,15 @@ if ($loadBtn.length) $loadBtn.on("click", search);
 const $contactBtn = $("#contactBtn");
 if ($contactBtn.length) $contactBtn.on("click", contactUs);
 
+/**
+ * Handle contact form submission.
+ * Validates the form using the native checkValidity() API, stores the collected
+ * data in localStorage and initiates a JSON file download with the submitted data.
+ */
 function contactUs(event) {
   console.log("inside contact");
 
+  // hide any previous thank-you message
   $("#thankYouMsg").hide();
 
   // disabling form submissions if there are invalid fields
@@ -27,13 +33,65 @@ function contactUs(event) {
     return false;
   }
 
+  // save form to local storage after receiving from function
+  const formData = getFormData(nativeForm);
+  console.log(formData);
+  localStorage.setItem("contactFormData", JSON.stringify(formData));
+
+  // Save form data to text file and download
+  saveToFile(formData);
+
   // show thank you message
   $("#thankYouMsg").show();
 }
 
-//
+/**
+ * Collect values from a form element into a plain object keyed by element id.
+ * Only elements with an id are included.
+ *
+ * @param form - native form element
+ * @returns form data
+ */
+function getFormData(form) {
+  const formData = {};
+  const elements = form.elements;
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (element.id) {
+      formData[element.id] = element.value;
+    }
+  }
+  return formData;
+}
+
+/**
+ * Trigger a download of the provided formData as a JSON-formatted text file.
+ * Uses a temporary anchor element and a Blob URL.
+ *
+ * @param formData - plain object to stringify and download
+ */
+function saveToFile(formData) {
+  const dataStr = JSON.stringify(formData, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "contactFormData.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Search handler: validates the search form, shows a spinner, calls the movie API
+ * and renders results via showMovies.
+ *
+ * @param event - click event from the Search button
+ */
 async function search(event) {
   console.log("inside search");
+
   // disabling form submissions if there are invalid fields
   const $form = $("#movie-search-form");
   const nativeForm = $form.get(0);
@@ -70,7 +128,10 @@ async function search(event) {
   }
 }
 
-// takes an array of your Movie objects and displays them
+/**
+ * takes an array of your Movie objects and displays them
+ * @param movies - array of Movie instances
+ */
 export function showMovies(movies) {
   const $container = $("#movieList");
   $container.html(""); // clear old results
@@ -80,6 +141,7 @@ export function showMovies(movies) {
     return;
   }
 
+  // Render each Movie instance as a Bootstrap card
   movies.forEach((movie) => {
     const poster = movie.getPosterUrl() ?? "./images/blank-poster.png";
 
@@ -97,7 +159,6 @@ export function showMovies(movies) {
               ${movie.overview.slice(0, 200) + "..." || "No description available."}
             </p>
 
-            
           </div>
         </div>
       </div>
@@ -106,7 +167,3 @@ export function showMovies(movies) {
     $container.append(card);
   });
 }
-
-// Expose handlers to window in case inline handlers or other scripts expect them
-window.search = search;
-window.contactUs = contactUs;

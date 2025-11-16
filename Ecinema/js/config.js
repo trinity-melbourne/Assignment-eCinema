@@ -1,3 +1,14 @@
+/**
+ * Application configuration
+ * Exports an object with keys used by the app. Replace TOKEN with your
+ * own TMDB bearer token for API access when deploying or testing.
+ *
+ * Shape:
+ * {
+ *   API_URL: string, // base URL for TMDB API
+ *   TOKEN: string    // bearer token for Authorization header
+ * }
+ */
 export default {
   API_URL: "https://api.themoviedb.org/3",
   TOKEN:
