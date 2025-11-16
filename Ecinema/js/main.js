@@ -2,47 +2,54 @@
 import config from "./config.js";
 import { Movie } from "./movie.js";
 
-const loadBtn = document.getElementById("loadBtn");
-if (loadBtn) loadBtn.addEventListener("click", search);
+// replacing:
+// const loadBtn = document.getElementById("loadBtn");
+// if (loadBtn) loadBtn.addEventListener("click", search);
 
-const contactBtn = document.getElementById("contactBtn");
-if (contactBtn) contactBtn.addEventListener("click", contactUs);
+const $loadBtn = $("#loadBtn");
+if ($loadBtn.length) $loadBtn.on("click", search);
+
+const $contactBtn = $("#contactBtn");
+if ($contactBtn.length) $contactBtn.on("click", contactUs);
 
 function contactUs(event) {
   console.log("inside contact");
 
-  //  disabling form submissions if there are invalid fields
-  const form = document.getElementById("contact-us-form");
-  if (!form.checkValidity()) {
+  $("#thankYouMsg").hide();
+
+  // disabling form submissions if there are invalid fields
+  const $form = $("#contact-us-form");
+  const nativeForm = $form.get(0);
+  if (nativeForm && !nativeForm.checkValidity()) {
     event.preventDefault();
     event.stopPropagation();
-    form.classList.add("was-validated");
+    $form.addClass("was-validated");
     return false;
   }
 
   // show thank you message
-  const thankYouMsg = document.getElementById("thankYouMsg");
-  thankYouMsg.style.display = "block";
+  $("#thankYouMsg").show();
 }
 
 //
 async function search(event) {
   console.log("inside search");
-  //  disabling form submissions if there are invalid fields
-  const form = document.getElementById("movie-search-form");
-  if (!form.checkValidity()) {
+  // disabling form submissions if there are invalid fields
+  const $form = $("#movie-search-form");
+  const nativeForm = $form.get(0);
+  if (nativeForm && !nativeForm.checkValidity()) {
     event.preventDefault();
     event.stopPropagation();
-    form.classList.add("was-validated");
+    $form.addClass("was-validated");
     return false;
   }
 
-  form.classList.add("was-validated");
+  $form.addClass("was-validated");
 
-  const q = document.getElementById("q").value.trim();
+  const q = $("#q").val().trim();
 
-  const spinner = document.getElementById("spinner");
-  spinner.classList.remove("d-none"); // show spinner
+  const $spinner = $("#spinner");
+  $spinner.removeClass("d-none"); // show spinner
 
   try {
     const response = await axios.get(`${config.API_URL}/search/movie`, {
@@ -59,17 +66,17 @@ async function search(event) {
   } catch (error) {
     console.log(error);
   } finally {
-    spinner.classList.add("d-none"); // hide spinner after API completes
+    $spinner.addClass("d-none"); // hide spinner after API completes
   }
 }
 
 // takes an array of your Movie objects and displays them
 export function showMovies(movies) {
-  const container = document.getElementById("movieList");
-  container.innerHTML = ""; // clear old results
+  const $container = $("#movieList");
+  $container.html(""); // clear old results
 
   if (!movies.length) {
-    container.innerHTML = `<p class="text-muted">No movies found</p>`;
+    $container.html(`<p class="text-muted">No movies found</p>`);
     return;
   }
 
@@ -96,6 +103,10 @@ export function showMovies(movies) {
       </div>
     `;
 
-    container.insertAdjacentHTML("beforeend", card);
+    $container.append(card);
   });
 }
+
+// Expose handlers to window in case inline handlers or other scripts expect them
+window.search = search;
+window.contactUs = contactUs;
