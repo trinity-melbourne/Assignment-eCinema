@@ -27,8 +27,6 @@ export class Movie {
   }
 
   getShortSummary() {
-    return `${this.title} (${this.releaseDate || "N/A"}) - Rating: ${
-      this.voteAverage
-    }`;
+    return `${this.title} (${this.releaseDate || "N/A"}) - Rating: ${this.voteAverage}`;
   }
 }

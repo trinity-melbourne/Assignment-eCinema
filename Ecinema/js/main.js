@@ -3,7 +3,27 @@ import config from "./config.js";
 import { Movie } from "./movie.js";
 
 const loadBtn = document.getElementById("loadBtn");
-loadBtn.addEventListener("click", search);
+if (loadBtn) loadBtn.addEventListener("click", search);
+
+const contactBtn = document.getElementById("contactBtn");
+if (contactBtn) contactBtn.addEventListener("click", contactUs);
+
+function contactUs(event) {
+  console.log("inside contact");
+
+  //  disabling form submissions if there are invalid fields
+  const form = document.getElementById("contact-us-form");
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    event.stopPropagation();
+    form.classList.add("was-validated");
+    return false;
+  }
+
+  // show thank you message
+  const thankYouMsg = document.getElementById("thankYouMsg");
+  thankYouMsg.style.display = "block";
+}
 
 //
 async function search(event) {
@@ -25,16 +45,13 @@ async function search(event) {
   spinner.classList.remove("d-none"); // show spinner
 
   try {
-    const response = await fetch(
-      config.API_URL + `/search/movie?query=${encodeURIComponent(q)}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${config.TOKEN}`,
-        },
-      }
-    );
+    const response = await fetch(config.API_URL + `/search/movie?query=${encodeURIComponent(q)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${config.TOKEN}`,
+      },
+    });
 
     const data = await response.json();
 
@@ -68,16 +85,11 @@ export function showMovies(movies) {
 
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">${movie.title}</h5>
-            <p class="text-muted mb-1">Release: ${
-              movie.releaseDate || "N/A"
-            }</p>
+            <p class="text-muted mb-1">Release: ${movie.releaseDate || "N/A"}</p>
             <p class="text-muted mb-2">Rating: ${movie.voteAverage}</p>
 
             <p class="card-text flex-grow-1" style="font-size: 0.9rem;">
-              ${
-                movie.overview.slice(0, 200) + "..." ||
-                "No description available."
-              }
+              ${movie.overview.slice(0, 200) + "..." || "No description available."}
             </p>
 
             
