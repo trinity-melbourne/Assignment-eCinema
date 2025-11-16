@@ -42,7 +42,10 @@ function contactUs(event) {
   saveToFile(formData);
 
   // show thank you message
-  $("#thankYouMsg").show();
+  const $thank = $("#thankYouMsg");
+  $thank.show().attr("aria-hidden", "false");
+  // move focus to thank-you message for screen readers
+  $thank.get(0).focus?.();
 }
 
 /**
@@ -54,6 +57,7 @@ function contactUs(event) {
  */
 function getFormData(form) {
   const formData = {};
+  debugger;
   const elements = form.elements;
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
@@ -108,6 +112,9 @@ async function search(event) {
 
   const $spinner = $("#spinner");
   $spinner.removeClass("d-none"); // show spinner
+  $spinner.attr("aria-hidden", "false");
+  // mark results region busy for assistive tech
+  $("#movieList").attr("aria-busy", "true");
 
   try {
     const response = await axios.get(`${config.API_URL}/search/movie`, {
@@ -125,6 +132,8 @@ async function search(event) {
     console.log(error);
   } finally {
     $spinner.addClass("d-none"); // hide spinner after API completes
+    $spinner.attr("aria-hidden", "true");
+    $("#movieList").attr("aria-busy", "false");
   }
 }
 
@@ -145,18 +154,22 @@ export function showMovies(movies) {
   movies.forEach((movie) => {
     const poster = movie.getPosterUrl() ?? "./images/blank-poster.png";
 
+    // Create accessible IDs for title and description so aria-labelledby can reference them
+    const titleId = `movie-title-${movie.id}`;
+    const descId = `movie-desc-${movie.id}`;
+
     const card = `
       <div class="col-md-3 mb-4">
-        <div class="card h-100 shadow-sm">
-          <img src="${poster}" class="card-img-top" alt="${movie.title}" />
+        <div class="card h-100 shadow-sm" role="article" aria-labelledby="${titleId}" aria-describedby="${descId}">
+          <img src="${poster}" class="card-img-top" alt="Poster for ${movie.title}" />
 
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${movie.title}</h5>
+            <h5 class="card-title" id="${titleId}">${movie.title}</h5>
             <p class="text-muted mb-1">Release: ${movie.releaseDate || "N/A"}</p>
             <p class="text-muted mb-2">Rating: ${movie.voteAverage}</p>
 
-            <p class="card-text flex-grow-1" style="font-size: 0.9rem;">
-              ${movie.overview.slice(0, 200) + "..." || "No description available."}
+            <p class="card-text flex-grow-1" id="${descId}" style="font-size: 0.9rem;">
+              ${movie.overview ? movie.overview.slice(0, 200) + "..." : "No description available."}
             </p>
 
           </div>
