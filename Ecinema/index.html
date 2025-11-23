@@ -53,19 +53,20 @@
         </div>
       </div>
     </nav>
+
     <main class="flex-fill">
       <h1 id="search-heading" class="text-center mb-4"><i class="bi bi-search"></i> Movie Search</h1>
       <!-- your page content → cards, search bar etc -->
       <div class="container text-center">
         <form class="row g-3 needs-validation" id="movie-search-form" action="#" novalidate>
           <div class="mb-3">
-            <label for="q" class="form-label">Enter name of a Movie</label>
-            <input type="text" class="form-control" id="q" aria-label="Movie search" required />
+            <label for="movie-name" class="form-label">Enter name of a Movie</label
+            ><input type="text" class="form-control" id="movie-name" aria-label="Movie search" required />
             <div class="invalid-feedback">Enter a Movie name</div>
           </div>
 
           <div class="col-12">
-            <button type="button" class="btn btn-primary" id="loadBtn" aria-label="Search movies">
+            <button type="button" class="btn btn-primary" id="searchMovieBtn" aria-label="Search movies">
               <span
                 class="spinner-border spinner-border-sm d-none"
                 id="spinner"

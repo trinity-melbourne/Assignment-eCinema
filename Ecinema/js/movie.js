@@ -1,58 +1,44 @@
 /**
- * Movie model
- * Lightweight wrapper around TMDB movie data returned from the API.
- * Provides helpers to build image URLs and format short summaries.
+ * Movie model - lightweight representation of a TMDB movie
  *
- * Usage:
- *   const m = new Movie(apiData);
- *   m.getPosterUrl();
+ * Only properties required by the UI (showMovies) are kept:
+ *  - id, title, releaseDate, voteAverage, overview, posterPath
+ *
+ * Methods:
+ *  - getPosterUrl(size)  -> returns full poster URL or null
+ *  - getShortSummary()    -> brief summary string
  */
 export class Movie {
   /**
-   * Construct a Movie instance from raw API data.
-   * @param {Object} data - raw movie object from TMDB API
+   * @param {object} data - raw TMDB movie object
    */
-  constructor(data) {
+  constructor(data = {}) {
     this.id = data.id;
-    this.title = data.title;
-    this.originalTitle = data.original_title;
-    this.overview = data.overview;
-    this.releaseDate = data.release_date;
-    this.originalLanguage = data.original_language;
-    this.posterPath = data.poster_path;
-    this.backdropPath = data.backdrop_path;
-    this.genreIds = data.genre_ids || [];
-    this.popularity = data.popularity;
-    this.voteAverage = data.vote_average;
-    this.voteCount = data.vote_count;
-    this.adult = data.adult;
-    this.video = data.video;
+    this.title = data.title || data.original_title || "Untitled";
+    this.releaseDate = data.release_date || null;
+    this.voteAverage = data.vote_average ?? null;
+    this.overview = data.overview || "";
+    // keep posterPath because getPosterUrl() uses it and showMovies displays poster
+    this.posterPath = data.poster_path || null;
   }
+
   /**
-   * Build the full URL to the poster image hosted by TMDB.
-   * @param {string} [size='w500'] - TMDB image size token (e.g. 'w200','w500')
-   * @returns {string|null} absolute image URL or null if no poster is available
+   * Return a complete poster image URL or null if no poster is available.
+   * @param {string} [size='w342'] - TMDB image size token (e.g. 'w185','w342','original')
+   * @returns {string|null}
    */
-  getPosterUrl(size = "w500") {
+  getPosterUrl(size = "w342") {
     if (!this.posterPath) return null;
-    return `https://image.tmdb.org/t/p/${size}${this.posterPath}`;
+    return "https://image.tmdb.org/t/p/" + size + this.posterPath;
   }
 
   /**
-   * Build the full URL to the backdrop image hosted by TMDB.
-   * @param {string} [size='w780'] - TMDB image size token
-   * @returns {string|null} absolute backdrop URL or null if not available
+   * Return a short summary (safely truncated) for card display.
+   * @param {number} [maxChars=200]
+   * @returns {string}
    */
-  getBackdropUrl(size = "w780") {
-    if (!this.backdropPath) return null;
-    return `https://image.tmdb.org/t/p/${size}${this.backdropPath}`;
-  }
-
-  /**
-   * Return a short, human-readable summary for display in lists.
-   * @returns {string} short summary including title, release year and rating
-   */
-  getShortSummary() {
-    return `${this.title} (${this.releaseDate || "N/A"}) - Rating: ${this.voteAverage}`;
+  getShortSummary(maxChars = 200) {
+    if (!this.overview) return "No description available.";
+    return this.overview.length > maxChars ? this.overview.slice(0, maxChars) + "..." : this.overview;
   }
 }
